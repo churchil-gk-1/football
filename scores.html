@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Score Board</title>
+</head>
+<body>
+    <h1>Score Board</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Player Name</th>
+                <th>Goals Scored</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="scoreBoard">
+            <!-- Score entries will be added here -->
+        </tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Retrieve score data from localStorage
+            let scores = JSON.parse(localStorage.getItem('scores')) || [];
+            const scoreBoard = document.getElementById('scoreBoard');
+
+            scores.forEach(function(score, index) {
+                const newRow = document.createElement('tr');
+
+                const nameCell = document.createElement('td');
+                nameCell.textContent = score.playerName;
+
+                const goalsCell = document.createElement('td');
+                goalsCell.textContent = score.goals;
+
+                const actionCell = document.createElement('td');
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = function() {
+                    deleteScore(index);
+                };
+                actionCell.appendChild(deleteButton);
+
+                newRow.appendChild(nameCell);
+                newRow.appendChild(goalsCell);
+                newRow.appendChild(actionCell);
+
+                scoreBoard.appendChild(newRow);
+            });
+        });
+
+        function deleteScore(index) {
+            let scores = JSON.parse(localStorage.getItem('scores')) || [];
+            scores.splice(index, 1);
+            localStorage.setItem('scores', JSON.stringify(scores));
+            location.reload();
+        }
+    </script>
+</body>
+</html>
